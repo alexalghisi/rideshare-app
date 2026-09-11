@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ScrollView,
   StatusBar,
-  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -82,14 +81,14 @@ export default function RideOptionsScreen({ navigation, route }) {
         <View style={styles.tripRow}>
           <View style={styles.greenDot} />
           <Text style={styles.tripText} numberOfLines={1}>
-            {route.params?.pickup?.name || 'Current Location'}
+            {route.params.pickup.name || 'Current Location'}
           </Text>
         </View>
         <View style={styles.tripDivider} />
         <View style={styles.tripRow}>
           <View style={styles.redDot} />
           <Text style={styles.tripText} numberOfLines={1}>
-            {route.params?.dropoff?.name || 'Destination'}
+            {route.params.dropoff.name || 'Destination'}
           </Text>
         </View>
       </View>
