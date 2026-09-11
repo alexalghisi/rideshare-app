@@ -6,6 +6,10 @@ A beautiful, modern rideshare application built with React Native and Expo. This
 ![Expo](https://img.shields.io/badge/Expo-51.0-black.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
+<p align="center">
+  <img src="assets/demo.gif" alt="RideShare app walkthrough: login, home, map and ride selection" width="300" />
+</p>
+
 ## ✨ Features
 
 - 🔐 **Authentication Flow** - Phone/Google/Apple sign-in
@@ -18,7 +22,11 @@ A beautiful, modern rideshare application built with React Native and Expo. This
 
 ## 📱 Screenshots
 
-The app includes:
+<p align="center">
+  <img src="assets/demo.gif" alt="Animated walkthrough of the login, home, map and ride options screens" width="300" />
+</p>
+
+The walkthrough above steps through the core flow:
 - Login screen with multiple auth options
 - Home screen with recent and saved places
 - Interactive map view with pickup/dropoff selection
