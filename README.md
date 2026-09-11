@@ -233,5 +233,3 @@ For issues or questions, please open an issue on the repository.
 ---
 
 **Happy Coding! 🚀**
-# rideshare-app
-# rideshare-app
