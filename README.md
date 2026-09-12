@@ -117,7 +117,7 @@ rideshare-app/
 
 - **React Native** + **Expo** - App framework and tooling
 - **React Navigation** - Stack navigation
-- **React Native Maps** - Map integration
+- **Leaflet** + **OpenStreetMap** (in a WebView) - Map integration
 - **Jest** + **React Native Testing Library** - Testing
 - **ESLint** - Linting
 
@@ -125,10 +125,10 @@ rideshare-app/
 
 ### Maps
 
-Interactive maps require a Google Maps API key for production use.
-
-1. Create a key in the [Google Cloud Console](https://console.cloud.google.com/) and enable the Maps SDKs for iOS and Android.
-2. Set the keys in `app.json` under `ios.config.googleMapsApiKey` and `android.config.googleMaps.apiKey`.
+The map renders OpenStreetMap tiles through Leaflet inside a `WebView`, so it works
+out of the box — no Google Maps API key, native configuration, or development build
+required, including in Expo Go. Tiles are subject to the
+[OpenStreetMap tile usage policy](https://operations.osmfoundation.org/policies/tiles/).
 
 ## 📦 Building for Distribution
 
