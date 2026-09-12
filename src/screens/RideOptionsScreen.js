@@ -6,60 +6,27 @@ import {
   StyleSheet,
   ScrollView,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RIDE_OPTIONS, DEFAULT_RIDE_ID, getRideById } from '../data/rideOptions';
 
-const RIDE_OPTIONS = [
-  {
-    id: '1',
-    name: 'RideShare X',
-    icon: '🚗',
-    time: '3 min',
-    price: '$8.50',
-    capacity: '4 seats',
-    description: 'Affordable everyday rides',
-  },
-  {
-    id: '2',
-    name: 'RideShare Comfort',
-    icon: '🚙',
-    time: '5 min',
-    price: '$14.20',
-    capacity: '4 seats',
-    description: 'Newer cars with extra legroom',
-    popular: true,
-  },
-  {
-    id: '3',
-    name: 'RideShare XL',
-    icon: '🚐',
-    time: '7 min',
-    price: '$18.90',
-    capacity: '6 seats',
-    description: 'Room for up to 6 passengers',
-  },
-  {
-    id: '4',
-    name: 'RideShare Lux',
-    icon: '🚘',
-    time: '8 min',
-    price: '$32.50',
-    capacity: '4 seats',
-    description: 'High-end cars with top-rated drivers',
-  },
-];
+const PAYMENT_METHOD = '**** 4242';
+const REDIRECT_DELAY_MS = 2000;
 
 export default function RideOptionsScreen({ navigation, route }) {
-  const [selectedRide, setSelectedRide] = useState(RIDE_OPTIONS[1].id);
-  const [paymentMethod] = useState('**** 4242');
+  const [selectedRide, setSelectedRide] = useState(DEFAULT_RIDE_ID);
 
-  const selectedRideData = RIDE_OPTIONS.find((r) => r.id === selectedRide);
+  const selectedRideData = getRideById(selectedRide);
 
   const handleBookRide = () => {
-    alert('🎉 Ride booked! Your driver will arrive in ' + selectedRideData.time);
+    Alert.alert(
+      '🎉 Ride booked!',
+      `Your ${selectedRideData.name} driver will arrive in ${selectedRideData.time}`
+    );
     setTimeout(() => {
       navigation.navigate('Home');
-    }, 2000);
+    }, REDIRECT_DELAY_MS);
   };
 
   return (
@@ -151,7 +118,7 @@ export default function RideOptionsScreen({ navigation, route }) {
               <Text style={styles.paymentIcon}>💳</Text>
               <View>
                 <Text style={styles.paymentLabel}>Payment</Text>
-                <Text style={styles.paymentMethod}>Visa {paymentMethod}</Text>
+                <Text style={styles.paymentMethod}>Visa {PAYMENT_METHOD}</Text>
               </View>
             </View>
             <Text style={styles.paymentArrow}>›</Text>
