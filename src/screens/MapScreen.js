@@ -23,14 +23,8 @@ export default function MapScreen({ navigation, route }) {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const [pickupCoords] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-  });
-  const [dropoffCoords] = useState({
-    latitude: 37.80825,
-    longitude: -122.4124,
-  });
+  const pickupCoords = { latitude: 37.78825, longitude: -122.4324 };
+  const dropoffCoords = { latitude: 37.80825, longitude: -122.4124 };
 
   const bottomSheetAnim = useRef(new Animated.Value(0)).current;
 
@@ -41,7 +35,7 @@ export default function MapScreen({ navigation, route }) {
       tension: 50,
       friction: 8,
     }).start();
-  }, []);
+  }, [bottomSheetAnim]);
 
   const handleConfirmPickup = () => {
     navigation.navigate('RideOptions', {
