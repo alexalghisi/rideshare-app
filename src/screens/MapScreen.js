@@ -1,30 +1,64 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
   StatusBar,
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { WebView } from 'react-native-webview';
 
-const { width, height } = Dimensions.get('window');
+const pickupCoords = { latitude: 37.78825, longitude: -122.4324 };
+const dropoffCoords = { latitude: 37.80825, longitude: -122.4124 };
+
+// Renders an interactive OpenStreetMap via Leaflet inside a WebView. This keeps
+// the map key-free and working in Expo Go, where native Google Maps is no longer
+// supported. Pickup is drawn in green; the dropoff in red once a destination is set.
+function buildMapHtml(hasDropoff) {
+  const focus = hasDropoff
+    ? `map.fitBounds(L.latLngBounds([pickup, dropoff]), { padding: [72, 72] });`
+    : `map.setView(pickup, 15);`;
+  const dropoffMarker = hasDropoff
+    ? `L.circleMarker(dropoff, { radius: 9, weight: 3, color: '#fff', fillColor: '#FF3B30', fillOpacity: 1 }).addTo(map);`
+    : '';
+
+  return `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      html, body, #map { margin: 0; height: 100%; width: 100%; background: #e8eaed; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const pickup = [${pickupCoords.latitude}, ${pickupCoords.longitude}];
+      const dropoff = [${dropoffCoords.latitude}, ${dropoffCoords.longitude}];
+      const map = L.map('map', { zoomControl: false });
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(map);
+      L.circleMarker(pickup, { radius: 9, weight: 3, color: '#fff', fillColor: '#00D86F', fillOpacity: 1 }).addTo(map);
+      ${dropoffMarker}
+      ${focus}
+    </script>
+  </body>
+</html>`;
+}
 
 export default function MapScreen({ navigation, route }) {
   const [pickup, setPickup] = useState('Current Location');
   const [dropoff, setDropoff] = useState(route.params?.destination?.name || '');
-  const [region, setRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-  const pickupCoords = { latitude: 37.78825, longitude: -122.4324 };
-  const dropoffCoords = { latitude: 37.80825, longitude: -122.4124 };
+  const hasDropoff = Boolean(dropoff);
+  const mapHtml = useMemo(() => buildMapHtml(hasDropoff), [hasDropoff]);
 
   const bottomSheetAnim = useRef(new Animated.Value(0)).current;
 
@@ -48,25 +82,11 @@ export default function MapScreen({ navigation, route }) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       
-      <MapView
-        provider={PROVIDER_GOOGLE}
+      <WebView
         style={styles.map}
-        region={region}
-        onRegionChangeComplete={setRegion}
-      >
-        <Marker
-          coordinate={pickupCoords}
-          title="Pickup Location"
-          pinColor="green"
-        />
-        {dropoff && (
-          <Marker
-            coordinate={dropoffCoords}
-            title="Dropoff Location"
-            pinColor="red"
-          />
-        )}
-      </MapView>
+        originWhitelist={['*']}
+        source={{ html: mapHtml }}
+      />
 
       <SafeAreaView style={styles.topContainer}>
         <View style={styles.header}>
@@ -170,8 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   map: {
-    width: width,
-    height: height,
+    flex: 1,
   },
   topContainer: {
     position: 'absolute',
