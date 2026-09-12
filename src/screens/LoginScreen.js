@@ -10,13 +10,16 @@ import {
   StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { isPhoneComplete } from '../lib/validation';
 
 export default function LoginScreen({ navigation }) {
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleLogin = () => {
-    if (phoneNumber.length >= 10) {
-      navigation.replace('Home');
+  const goToHome = () => navigation.replace('Home');
+
+  const handlePhoneLogin = () => {
+    if (isPhoneComplete(phoneNumber)) {
+      goToHome();
     }
   };
 
@@ -52,10 +55,10 @@ export default function LoginScreen({ navigation }) {
             <TouchableOpacity
               style={[
                 styles.button,
-                phoneNumber.length < 10 && styles.buttonDisabled,
+                !isPhoneComplete(phoneNumber) && styles.buttonDisabled,
               ]}
-              onPress={handleLogin}
-              disabled={phoneNumber.length < 10}
+              onPress={handlePhoneLogin}
+              disabled={!isPhoneComplete(phoneNumber)}
             >
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
@@ -66,12 +69,12 @@ export default function LoginScreen({ navigation }) {
               <View style={styles.line} />
             </View>
 
-            <TouchableOpacity style={styles.socialButton} onPress={handleLogin}>
+            <TouchableOpacity style={styles.socialButton} onPress={goToHome}>
               <Text style={styles.socialIcon}>G</Text>
               <Text style={styles.socialText}>Continue with Google</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.socialButton} onPress={handleLogin}>
+            <TouchableOpacity style={styles.socialButton} onPress={goToHome}>
               <Text style={styles.socialIcon}>📱</Text>
               <Text style={styles.socialText}>Continue with Apple</Text>
             </TouchableOpacity>

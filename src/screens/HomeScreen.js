@@ -9,18 +9,10 @@ import {
   StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RECENT_PLACES, SAVED_PLACES } from '../data/places';
 
 export default function HomeScreen({ navigation }) {
   const [destination, setDestination] = useState('');
-  const [recentPlaces] = useState([
-    { id: '1', name: 'Home', address: '123 Main St, San Francisco, CA', icon: '🏠' },
-    { id: '2', name: 'Work', address: '456 Market St, San Francisco, CA', icon: '💼' },
-  ]);
-
-  const [savedPlaces] = useState([
-    { id: '3', name: 'Gym', address: '789 Valencia St, San Francisco, CA', icon: '💪' },
-    { id: '4', name: 'Airport', address: 'SFO International Airport', icon: '✈️' },
-  ]);
 
   const handleSelectDestination = (place) => {
     navigation.navigate('Map', { destination: place });
@@ -63,7 +55,7 @@ export default function HomeScreen({ navigation }) {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Recent</Text>
-          {recentPlaces.map((place) => (
+          {RECENT_PLACES.map((place) => (
             <TouchableOpacity
               key={place.id}
               style={styles.placeItem}
@@ -83,7 +75,7 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Saved Places</Text>
-          {savedPlaces.map((place) => (
+          {SAVED_PLACES.map((place) => (
             <TouchableOpacity
               key={place.id}
               style={styles.placeItem}
