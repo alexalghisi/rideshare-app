@@ -49,7 +49,6 @@
     ],
     "collectCoverageFrom": [
       "src/**/*.js",
-      "App.js",
       "!**/node_modules/**"
     ]
   },
