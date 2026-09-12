@@ -1,5 +1,22 @@
 // Global test setup: mock native-only modules so screens render under Jest.
 import 'react-native-gesture-handler/jestSetup';
+import { Animated } from 'react-native';
+
+// Resolve animations synchronously in tests. This keeps entrance animations
+// and React Navigation transitions from leaving timers running after a test,
+// which otherwise leaks open handles and stalls teardown on slower machines.
+const immediateAnimation = (value, config) => ({
+  start: (callback) => {
+    if (value && typeof value.setValue === 'function' && config) {
+      value.setValue(config.toValue);
+    }
+    callback && callback({ finished: true });
+  },
+  stop: () => {},
+  reset: () => {},
+});
+jest.spyOn(Animated, 'timing').mockImplementation(immediateAnimation);
+jest.spyOn(Animated, 'spring').mockImplementation(immediateAnimation);
 
 // Safe area context is a native module; provide light-weight passthroughs
 // with zero insets so screens render in the Jest environment.
