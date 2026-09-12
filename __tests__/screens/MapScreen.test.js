@@ -1,16 +1,6 @@
 import React from 'react';
-import { Animated } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 import MapScreen from '../../src/screens/MapScreen';
-
-// The entrance animation is irrelevant to behavior; finish it synchronously
-// so no state updates land outside React's act() during these tests.
-beforeAll(() => {
-  jest.spyOn(Animated, 'spring').mockReturnValue({
-    start: (cb) => cb && cb({ finished: true }),
-  });
-});
-afterAll(() => jest.restoreAllMocks());
 
 const renderScreen = (destination) => {
   const navigation = { navigate: jest.fn(), goBack: jest.fn() };
