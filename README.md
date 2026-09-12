@@ -5,7 +5,7 @@ A modern, cross-platform rideshare app built with React Native and Expo — phon
 ![React Native](https://img.shields.io/badge/React%20Native-0.74-blue.svg)
 ![Expo](https://img.shields.io/badge/Expo-51.0-black.svg)
 [![CI](https://github.com/alexalghisi/rideshare-app/actions/workflows/ci.yml/badge.svg)](https://github.com/alexalghisi/rideshare-app/actions/workflows/ci.yml)
-![Tests](https://img.shields.io/badge/tests-22%20passing-brightgreen.svg)
+![Tests](https://img.shields.io/badge/tests-21%20passing-brightgreen.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 <p align="center">
