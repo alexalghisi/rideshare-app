@@ -38,20 +38,13 @@ jest.mock('react-native-safe-area-context', () => {
   };
 });
 
-// react-native-maps is a native module; render its components as plain views.
-jest.mock('react-native-maps', () => {
+// react-native-webview is a native module; render it as a plain view so the
+// map-hosting screen mounts under Jest.
+jest.mock('react-native-webview', () => {
   const React = require('react');
   const { View } = require('react-native');
-  const MockComponent = (name) => {
-    const Comp = ({ children, ...props }) =>
-      React.createElement(View, { ...props, testID: props.testID || name }, children);
-    Comp.displayName = name;
-    return Comp;
-  };
-  return {
-    __esModule: true,
-    default: MockComponent('MapView'),
-    Marker: MockComponent('Marker'),
-    PROVIDER_GOOGLE: 'google',
-  };
+  const WebView = ({ children, ...props }) =>
+    React.createElement(View, { ...props, testID: props.testID || 'WebView' }, children);
+  WebView.displayName = 'WebView';
+  return { __esModule: true, WebView };
 });
